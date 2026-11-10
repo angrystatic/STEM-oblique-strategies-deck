@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEM Lateral Thinking Prompts</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to enhance the minimalist tech aesthetic */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            /* Disable text selection to make clicking anywhere feel like an app interaction */
+            user-select: none; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .fade-transition {
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200 h-screen w-screen overflow-hidden flex flex-col items-center justify-center cursor-pointer">
+
+    <!-- Main Prompt Container -->
+    <main class="flex-grow flex items-center justify-center p-6 w-full max-w-5xl">
+        <div id="prompt-container" class="fade-transition fade-in text-center">
+            <h1 id="prompt-text" class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-relaxed tracking-tight text-zinc-100 drop-shadow-sm">
+                <!-- Prompt will be injected here -->
+            </h1>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="absolute bottom-6 w-full text-center pb-4 opacity-50 hover:opacity-100 transition-opacity duration-300">
+        <p class="text-xs sm:text-sm text-zinc-500 tracking-widest uppercase">
+            STEM Lateral Thinking Prompts
+        </p>
+        <p class="text-[10px] text-zinc-600 mt-1">
+            Click anywhere or press Spacebar
+        </p>
+    </footer>
+
+    <script>
+        const prompts = [
+            'Assume infinite processing power.',
+            'Assume the constant is a variable.',
+            'Assume the environment is hostile.',
+            'Assume the sensors are lying.',
+            'Break the feedback loop.',
+            'Build the scaffold, leave the building.',
+            'Change the frame of reference.',
+            'Change the unit of measurement.',
+            'Decrease the resolution.',
+            'Deliberately induce latency.',
+            'Discard the optimal solution.',
+            'Document the anomalies, ignore the baseline.',
+            'Explain it to a completely different system.',
+            'Force a failure.',
+            'Introduce a random seed.',
+            'Introduce friction.',
+            'Invert the dependencies.',
+            'Is there a simpler abstraction?',
+            'Listen to the noise.',
+            'Look at the edge cases. Make them the center.',
+            'Look for the physical limit.',
+            'Make the system closed.',
+            'Make the system open.',
+            'Multiply by zero.',
+            'Optimize for the worst case.',
+            'Reduce the dimensions by one.',
+            'Remove the most efficient component.',
+            'Run the process backward.',
+            'State the assumptions as errors.',
+            'Stop measuring.',
+            'Test the opposite hypothesis.',
+            'Translate the data into a different dimension.',
+            'Treat the error as the signal.',
+            'Uncouple the variables.',
+            'What are the boundary conditions?',
+            'What happens at absolute zero?',
+            'What if the null hypothesis is the goal?',
+            'What if the output is the input?',
+            'What is the elegant failure?',
+            'What is the most expensive operation? Do it twice.',
+            'What is the system trying to hide?',
+            'Zoom in until the structure disappears.',
+            'Zoom out until the structure disappears.'
+        ];
+
+        const textElement = document.getElementById('prompt-text');
+        const containerElement = document.getElementById('prompt-container');
+        
+        let currentIndex = -1;
+        let isAnimating = false;
+
+        // Function to get a random prompt index different from the current one
+        function getRandomIndex() {
+            if (prompts.length <= 1) return 0;
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * prompts.length);
+            } while (newIndex === currentIndex);
+            return newIndex;
+        }
+
+        // Function to transition to the next prompt
+        function showNextPrompt() {
+            if (isAnimating) return; // Prevent spam clicking
+            isAnimating = true;
+
+            // Fade out
+            containerElement.classList.remove('fade-in');
+            containerElement.classList.add('fade-out');
+
+            // Wait for fade out to complete, then change text and fade in
+            setTimeout(() => {
+                currentIndex = getRandomIndex();
+                textElement.innerText = prompts[currentIndex];
+                
+                containerElement.classList.remove('fade-out');
+                containerElement.classList.add('fade-in');
+
+                // Unlock interaction after fade in completes
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 600); // matches CSS transition duration
+            }, 600); // matches CSS transition duration
+        }
+
+        // Initialize with a random prompt immediately (no animation)
+        function init() {
+            currentIndex = getRandomIndex();
+            textElement.innerText = prompts[currentIndex];
+        }
+
+        // Event Listeners
+        document.body.addEventListener('click', showNextPrompt);
+        
+        document.body.addEventListener('keydown', (event) => {
+            // Trigger on Spacebar (keyCode 32 or code 'Space')
+            if (event.code === 'Space') {
+                event.preventDefault(); // Prevent page scrolling down
+                showNextPrompt();
+            }
+        });
+
+        // Run initialization
+        init();
+
+    </script>
+</body>
+</html>
